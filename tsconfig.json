@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "module": "es2015",
+        "declaration": true,
+        "strict": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "outDir": "lib",
+        "downlevelIteration": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+        "src/**/*.*",
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "scripts"
+    ],
+    "typeRoots": [
+        "node_modules/@types",
+    ]
+}
