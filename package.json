@@ -20,7 +20,8 @@
     "custom-element",
     "htmlelement",
     "fragment",
-    "shadowdom"
+    "shadowdom",
+    "no-framework"
   ],
   "scripts": {
     "start": "npm-run-all clean build watch",
