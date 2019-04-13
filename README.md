@@ -1,6 +1,6 @@
 # WebComp - TypeScript base class for web components
 
-Base class for custom [web components](https://www.webcomponents.org/) written in TypeScript.
+Base class for custom [web components](https://www.webcomponents.org/specs) written in TypeScript.
 
 ## Quick start
 
