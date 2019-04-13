@@ -1,8 +1,8 @@
-import { TodoTask } from "./todo-task.js";
-import { TodoNewTask } from "./todo-new-task.js";
 import { TodoList } from "./todo-list.js";
+import { TodoNewTask } from "./todo-new-task.js";
+import { TodoTask } from "./todo-task.js";
 
-export default function start(): void {
+export default function todo(): void {
     TodoTask.defineElement();
     TodoNewTask.defineElement();
     TodoList.defineElement();

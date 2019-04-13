@@ -4,7 +4,7 @@ export class TodoNewTask extends WebComp {
         super();
         const newTask = this.dom("new-task");
         if (newTask) {
-            newTask.addEventListener("submit", e => {
+            newTask.addEventListener("submit", (e) => {
                 e.preventDefault();
                 const taskInput = this.dom("task-input");
                 const task = taskInput.value;
@@ -13,7 +13,7 @@ export class TodoNewTask extends WebComp {
             });
         }
     }
-    html() {
+    get html() {
         return `
 <div class="todo-task">
     <form name="new-task" elem="new-task">
@@ -26,7 +26,7 @@ export class TodoNewTask extends WebComp {
 </div>
 `;
     }
-    css() {
+    get css() {
         return `
 div.todo-task {
     padding: 5px;

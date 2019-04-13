@@ -5,6 +5,6 @@ export declare class TodoTask extends WebComp {
     done: boolean;
     static readonly observedAttributes: string[];
     protected attributeChangedCallback(name: string, oldval: string, newval: string): void;
-    html(): string;
-    css(): string;
+    readonly html: string;
+    readonly css: string;
 }

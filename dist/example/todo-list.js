@@ -19,7 +19,7 @@ export class TodoList extends WebComp {
             });
         }
     }
-    html() {
+    get html() {
         return `
 <div class="todo-app-root" elem="todo">
     <slot></slot>
@@ -28,7 +28,7 @@ export class TodoList extends WebComp {
 </div>
 `;
     }
-    css() {
+    get css() {
         return `
 div.todo-app-root {
     padding: 5px;

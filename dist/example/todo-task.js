@@ -45,7 +45,7 @@ export class TodoTask extends WebComp {
                 break;
         }
     }
-    html() {
+    get html() {
         return `
 <div class="todo-task">
     <div class="task" elem="task">Default</div>
@@ -54,9 +54,10 @@ export class TodoTask extends WebComp {
         <button elem="delete">🗑</button>
     </div>
 </div>
+<hr />
 `;
     }
-    css() {
+    get css() {
         return `
 div.todo-task {
     padding: 5px;

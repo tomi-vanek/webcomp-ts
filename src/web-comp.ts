@@ -3,13 +3,18 @@ const classNameOf = (obj: any): string =>
         .toString()
         .split("(" || /s+/)[0]
         .split(" " || /s+/)[1];
+
 const pascalToKebab = (c: string): string => c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+
 const markupWith = (html: string, css: string): string => {
-    const cssMarkup = css && css.length ? `
+    const cssMarkup =
+        (css && css.length)
+            ? `
 <style>
 ${css}
 </style>
-` : "";
+`
+            : "";
     return `${html}
 ${cssMarkup}`;
 };
@@ -19,23 +24,6 @@ export type Fragment = DocumentFragment | HTMLElement | Node;
 // Base class for Web Components
 // has basic boilerplate code to simplify custom element implementation
 export abstract class WebComp extends HTMLElement {
-    // Cached reference to elements marked with `elem` attribute in HTML markup
-    private readonly _domElems: Map<string, HTMLElement> = new Map();
-
-    // Cached templates of derived web components
-    private static readonly _templates: Map<string, HTMLTemplateElement> = new Map();
-
-    constructor() {
-        super();
-
-        console.debug("Constructor", this.name());
-
-        // Instantiate and attach the shadow root
-        const root = this.attachShadow({ mode: "open" });
-        root.appendChild(this.render());
-        this._mapDom(root);
-    }
-
     // Registering of the custom element - has to be called explicitly for each derived web component
     // i.e. `TodoTask.defineElement();`
     public static defineElement(): void {
@@ -52,21 +40,37 @@ export abstract class WebComp extends HTMLElement {
         }
     }
 
+    // Cached templates of derived web components
+    private static readonly templates: Map<string, HTMLTemplateElement> = new Map();
+
+    // Cached reference to elements marked with `elem` attribute in HTML markup
+    private readonly domElems: Map<string, HTMLElement> = new Map();
+
+    constructor() {
+        super();
+        console.debug("Constructor", this.name);
+
+        // Instantiate and attach the shadow root
+        const root = this.attachShadow({ mode: "open" });
+        root.appendChild(this.render());
+        this._mapDom(root);
+    }
+
     // Helper function: dispatching custom events with standard DOM communication
     // Event bubbles up the DOM tree
     public dispatch(event: string, data: any): void {
         this.dispatchEvent(
             new CustomEvent(event, {
-                detail: data,
                 bubbles: true,
                 composed: true,
+                detail: data,
             }),
         );
     }
 
     // Access to cached elements
     public dom(elem: string): HTMLElement | undefined {
-        return this._domElems.get(elem);
+        return this.domElems.get(elem);
     }
 
     // Helper function: setting attributes of element without value (boolean)
@@ -79,53 +83,51 @@ export abstract class WebComp extends HTMLElement {
                 e.removeAttribute(attr);
             }
         } else {
-            console.debug(`Element ${elem} not found.`);
+            throw new Error(
+                `Element ${elem} not found in ${this.name}. Define elem="${elem}" as attribute in HTML element.`);
         }
     }
 
     // Web component's class name
-    public name(): string {
+    public get name(): string {
         return this.constructor.name;
     }
 
     // Web component's tag
-    public tag(): string {
-        return pascalToKebab(this.name());
-    }
-
-    // Render the component as DOM fragment - includes markup from this.html() and this.css()
-    public render(): Fragment {
-        console.debug("Render", this.name());
-        let template = WebComp._templates.get(this.name());
-        if (!template) {
-            const templateElem = document.createElement("template");
-            templateElem.innerHTML = markupWith(this.html(), this.css());
-            template = document.importNode(templateElem, true);
-            WebComp._templates.set(this.name(), template);
-        }
-        return template.content.cloneNode(true);
+    public get tag(): string {
+        return pascalToKebab(this.name);
     }
 
     // HTML markup of the web component
     // overwritten by derived components
-    protected html(): string {
+    protected get html(): string {
         return "<!-- no visible HTML -->";
     }
 
     // CSS of the web component
     // overwritten by derived components
-    protected css(): string {
+    protected get css(): string {
         return "/* no visible CSS */";
+    }
+
+    // Render the component as DOM fragment.
+    // Default implementation combines markup from this.html and this.css
+    public render(): Fragment {
+        console.debug("Render", this.name);
+        let template = WebComp.templates.get(this.name);
+        if (!template) {
+            const templateElem = document.createElement("template");
+            templateElem.innerHTML = markupWith(this.html, this.css);
+            template = document.importNode(templateElem, true);
+            WebComp.templates.set(this.name, template);
+        }
+        return template.content.cloneNode(true);
     }
 
     // Adds all marked elements into elem cache
     private _mapDom(root: ShadowRoot): void {
         const attribute = "elem";
-        root.querySelectorAll(`[${attribute}]`).forEach(c =>
-            this._domElems.set(c.getAttribute(attribute) as string, c as HTMLElement),
-        );
-        if (this._domElems.size) {
-            console.debug(`Elems in ${this.name()}: ${Array.from(this._domElems.keys()).join(", ")}`);
-        }
+        root.querySelectorAll(`[${attribute}]`).forEach(
+            (c) => this.domElems.set(c.getAttribute(attribute) as string, c as HTMLElement));
     }
 }

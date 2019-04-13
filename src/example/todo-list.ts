@@ -1,5 +1,5 @@
-import { TodoTask } from "./todo-task.js";
 import { WebComp } from "../web-comp.js";
+import { TodoTask } from "./todo-task.js";
 
 export class TodoList extends WebComp {
     constructor() {
@@ -24,7 +24,7 @@ export class TodoList extends WebComp {
         }
     }
 
-    html() {
+    get html() {
         return `
 <div class="todo-app-root" elem="todo">
     <slot></slot>
@@ -34,7 +34,7 @@ export class TodoList extends WebComp {
 `;
     }
 
-    css() {
+    get css() {
         return `
 div.todo-app-root {
     padding: 5px;

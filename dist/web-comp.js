@@ -4,19 +4,21 @@ const classNameOf = (obj) => obj
     .split(" " || /s+/)[1];
 const pascalToKebab = (c) => c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 const markupWith = (html, css) => {
-    const cssMarkup = css && css.length ? `
+    const cssMarkup = (css && css.length)
+        ? `
 <style>
 ${css}
 </style>
-` : "";
+`
+        : "";
     return `${html}
 ${cssMarkup}`;
 };
 export class WebComp extends HTMLElement {
     constructor() {
         super();
-        this._domElems = new Map();
-        console.debug("Constructor", this.name());
+        this.domElems = new Map();
+        console.debug("Constructor", this.name);
         const root = this.attachShadow({ mode: "open" });
         root.appendChild(this.render());
         this._mapDom(root);
@@ -34,13 +36,13 @@ export class WebComp extends HTMLElement {
     }
     dispatch(event, data) {
         this.dispatchEvent(new CustomEvent(event, {
-            detail: data,
             bubbles: true,
             composed: true,
+            detail: data,
         }));
     }
     dom(elem) {
-        return this._domElems.get(elem);
+        return this.domElems.get(elem);
     }
     setWithoutValue(elem, attr, value) {
         const e = elem instanceof HTMLElement ? elem : this.dom(elem);
@@ -53,39 +55,36 @@ export class WebComp extends HTMLElement {
             }
         }
         else {
-            console.debug(`Element ${elem} not found.`);
+            throw new Error(`Element ${elem} not found in ${this.name}. Define elem="${elem}" as attribute in HTML element.`);
         }
     }
-    name() {
+    get name() {
         return this.constructor.name;
     }
-    tag() {
-        return pascalToKebab(this.name());
+    get tag() {
+        return pascalToKebab(this.name);
+    }
+    get html() {
+        return "<!-- no visible HTML -->";
+    }
+    get css() {
+        return "/* no visible CSS */";
     }
     render() {
-        console.debug("Render", this.name());
-        let template = WebComp._templates.get(this.name());
+        console.debug("Render", this.name);
+        let template = WebComp.templates.get(this.name);
         if (!template) {
             const templateElem = document.createElement("template");
-            templateElem.innerHTML = markupWith(this.html(), this.css());
+            templateElem.innerHTML = markupWith(this.html, this.css);
             template = document.importNode(templateElem, true);
-            WebComp._templates.set(this.name(), template);
+            WebComp.templates.set(this.name, template);
         }
         return template.content.cloneNode(true);
     }
-    html() {
-        return "<!-- no visible HTML -->";
-    }
-    css() {
-        return "/* no visible CSS */";
-    }
     _mapDom(root) {
         const attribute = "elem";
-        root.querySelectorAll(`[${attribute}]`).forEach(c => this._domElems.set(c.getAttribute(attribute), c));
-        if (this._domElems.size) {
-            console.debug(`Elems in ${this.name()}: ${Array.from(this._domElems.keys()).join(", ")}`);
-        }
+        root.querySelectorAll(`[${attribute}]`).forEach((c) => this.domElems.set(c.getAttribute(attribute), c));
     }
 }
-WebComp._templates = new Map();
+WebComp.templates = new Map();
 //# sourceMappingURL=web-comp.js.map
