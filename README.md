@@ -68,7 +68,7 @@ Custom element overwrites getter for HTML template and getter for CSS:
 
 ``` TypeScript
 ...
-get html { return `
+get html() { return `
     <div class="content">
         <slot></slot>
         <p elem="task"></p>
@@ -194,7 +194,7 @@ WebComp base class simplifies dispatching of custom events by method `dispatchEv
 this.dispatch("delete-task", this);
 ```
 
-## Usage notes
+## Notes for usage
 
 For development I like to use ES6 modules, but TypeScript struggles to convert "non-relative" imports to ES6 module imports. I use relative inport from node_modules, and add also `.js` extension:
 
@@ -216,5 +216,5 @@ If you would find the right configuration of `tsconfog.json` that allows the mod
 
 This component aggregates ideas from books
 
-* Ben Farrell: Web Components in Action
-* Cory Rylan: Web Component Essentials
+* [Ben Farrell: Web Components in Action](https://www.manning.com/books/web-components-in-action)
+* [Cory Rylan: Web Component Essentials](https://webcomponentessentials.com/)

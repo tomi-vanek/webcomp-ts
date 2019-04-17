@@ -1,6 +1,6 @@
 {
   "name": "webcomp-ts",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Base class for web components has basic boilerplate code to simplify custom element implementation",
   "main": "dist/web-comp.js",
   "module": "dist/web-comp.js",
@@ -30,7 +30,7 @@
     "prepublishOnly": "npm-run-all clean build",
     "preversion": "npm-run-all clean build",
     "// WATCH": "----------------------------------",
-    "watch": "npm-run-all clean copy:assets tsc -p watch:*",
+    "watch": "npm-run-all clean lint copy:assets tsc -p watch:*",
     "watch:assets": "cpx -Cv \"./src/**/*.{html,css,svg,png,jpg,jpeg,ico}\" ./dist",
     "watch:tsc": "tsc --watch --project ./tsconfig.json",
     "watch:serve": "live-server --open='./dist/example/index.html' --port=8002",
