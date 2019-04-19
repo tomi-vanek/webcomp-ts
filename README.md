@@ -112,6 +112,12 @@ HTML is a template with DOM fragment:
 
     DOM elements in the component's HTML (h1 and p) will be placed into the default slot. Advanced scenarios may use named slots with more structure data (see [Mozilla article](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots) for more inspiration).
 
+## Animation
+
+Dynamic changes in time can be implemented by providing implementation of `animation()` method. This method runs ~ 60-times per second. Return value decides, if the animation will continue (= true) or stop (= false). If you want to start a stopped animation, call the `runAnimation()` method and in the callback method `animation()` return true to keep the animation loop running. See `todo-clock.ts` for inspiration.
+
+For actions that do not need so high frequency, `setTimeout()` and `setInterval()` could be a better option. In both cases we must save the timer ID, and in the overwritten method `disconnectedCallback()` clear the interval or timer (call the `clearTimeout()` or `clearInterval()`).
+
 ## State: HTML element attributes and object parameters
 
 With HTML DOM elements on one side and TypeScript / JavaScript objects on other side there is a dual appearence of the same component. To keep the mental model simple and intuitive, it is practical to keep the public state of the element in DOM attributes. The state is stored in elementar types (string, number, boolean). The component state can be read and written both through DOM API and also through object parameter.
@@ -194,7 +200,11 @@ WebComp base class simplifies dispatching of custom events by method `dispatchEv
 this.dispatch("delete-task", this);
 ```
 
-## Notes for usage
+## Cleanup
+
+If the component uses resources that has to be released by end-of-life (to avoid memory leaks, to stop running timers, releasing listeners, etc), all the cleanup tasks can be executed in the `disconnectedCallback()` method.
+
+## Side Notes
 
 For development I like to use ES6 modules, but TypeScript struggles to convert "non-relative" imports to ES6 module imports. I use relative inport from node_modules, and add also `.js` extension:
 
@@ -214,7 +224,8 @@ If you would find the right configuration of `tsconfog.json` that allows the mod
 
 ## Credits
 
-This component aggregates ideas from books
+This component aggregates ideas from
 
 * [Ben Farrell: Web Components in Action](https://www.manning.com/books/web-components-in-action)
 * [Cory Rylan: Web Component Essentials](https://webcomponentessentials.com/)
+* [developer.mozilla.org - Using Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)

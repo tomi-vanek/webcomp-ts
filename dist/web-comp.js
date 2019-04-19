@@ -21,7 +21,8 @@ export class WebComp extends HTMLElement {
         console.debug("Constructor", this.name);
         const root = this.attachShadow({ mode: "open" });
         root.appendChild(this.render());
-        this._mapDom(root);
+        this.mapDom(root);
+        this.runAnimation();
     }
     static defineElement() {
         const name = classNameOf(this);
@@ -81,7 +82,17 @@ export class WebComp extends HTMLElement {
         }
         return template.content.cloneNode(true);
     }
-    _mapDom(root) {
+    animation() {
+        return false;
+    }
+    runAnimation() {
+        requestAnimationFrame(() => {
+            if (this.animation()) {
+                this.runAnimation();
+            }
+        });
+    }
+    mapDom(root) {
         const attribute = "elem";
         root.querySelectorAll(`[${attribute}]`).forEach((c) => this.domElems.set(c.getAttribute(attribute), c));
     }

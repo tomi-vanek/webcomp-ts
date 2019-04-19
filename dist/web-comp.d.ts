@@ -12,5 +12,7 @@ export declare abstract class WebComp extends HTMLElement {
     protected readonly html: string;
     protected readonly css: string;
     render(): Fragment;
-    private _mapDom;
+    protected animation(): boolean;
+    protected runAnimation(): void;
+    private mapDom;
 }

@@ -53,7 +53,8 @@ export abstract class WebComp extends HTMLElement {
         // Instantiate and attach the shadow root
         const root = this.attachShadow({ mode: "open" });
         root.appendChild(this.render());
-        this._mapDom(root);
+        this.mapDom(root);
+        this.runAnimation();
     }
 
     // Helper function: dispatching custom events with standard DOM communication
@@ -99,13 +100,13 @@ export abstract class WebComp extends HTMLElement {
     }
 
     // HTML markup of the web component
-    // overwritten by derived components
+    // Metod for overwrite by derived classes
     protected get html(): string {
         return "<!-- no visible HTML -->";
     }
 
     // CSS of the web component
-    // overwritten by derived components
+    // Metod for overwrite by derived classes
     protected get css(): string {
         return "/* no visible CSS */";
     }
@@ -124,8 +125,23 @@ export abstract class WebComp extends HTMLElement {
         return template.content.cloneNode(true);
     }
 
+    // Metod for overwrite by derived classes
+    // If method returns true, it will be called by each frame (~60 times a minute)
+    protected animation(): boolean {
+        return false;
+    }
+
+    // Animation cycle
+    protected runAnimation(): void {
+        requestAnimationFrame(() => {
+            if (this.animation()) {
+                this.runAnimation();
+            }
+        });
+    }
+
     // Adds all marked elements into elem cache
-    private _mapDom(root: ShadowRoot): void {
+    private mapDom(root: ShadowRoot): void {
         const attribute = "elem";
         root.querySelectorAll(`[${attribute}]`).forEach(
             (c) => this.domElems.set(c.getAttribute(attribute) as string, c as HTMLElement));
