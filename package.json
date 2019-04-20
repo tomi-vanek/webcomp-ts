@@ -1,6 +1,6 @@
 {
   "name": "webcomp-ts",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Base class for web components has basic boilerplate code to simplify custom element implementation",
   "main": "dist/web-comp.js",
   "module": "dist/web-comp.js",
@@ -24,16 +24,11 @@
     "no-framework"
   ],
   "scripts": {
-    "start": "npm-run-all clean build watch",
+    "start": "npm run watch",
     "// LIFECYCLE": "----------------------------------",
     "postversion": "git push && git push --tags",
     "prepublishOnly": "npm-run-all clean build",
     "preversion": "npm-run-all clean build",
-    "// WATCH": "----------------------------------",
-    "watch": "npm-run-all clean lint copy:assets tsc -p watch:*",
-    "watch:assets": "cpx -Cvw \"./src/**/*.{html,css,svg,png,jpg,jpeg,ico}\" ./dist",
-    "watch:tsc": "tsc --watch --project ./tsconfig.json",
-    "watch:serve": "live-server --open='./dist/example/index.html' --port=8888",
     "// BUILD": "----------------------------------",
     "build": "npm-run-all clean tsc copy:assets",
     "copy:assets": "cpx -Cv \"./src/**/*.{html,css,svg,png,jpg,jpeg,ico}\" ./dist",
@@ -41,7 +36,12 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.ts\"",
     "tsc": "tsc --project ./tsconfig.json",
     "lint": "tslint --project ./tslint.json",
-    "serve": "http-server . -c-1 -p 3333"
+    "serve": "http-server . -c-1 -p 3333",
+    "// WATCH": "----------------------------------",
+    "watch": "npm-run-all clean lint copy:assets tsc -p watch:*",
+    "watch:assets": "cpx -Cvw \"./src/**/*.{html,css,svg,png,jpg,jpeg,ico}\" ./dist",
+    "watch:tsc": "tsc --watch --project ./tsconfig.json",
+    "watch:serve": "live-server --open='./dist/example/index.html' --port=8888"
   },
   "dependencies": {},
   "devDependencies": {
