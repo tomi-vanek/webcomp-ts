@@ -1,6 +1,6 @@
 {
   "name": "webcomp-ts",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Base class for web components has basic boilerplate code to simplify custom element implementation",
   "main": "dist/web-comp.js",
   "module": "dist/web-comp.js",
