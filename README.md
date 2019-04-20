@@ -116,7 +116,31 @@ HTML is a template with DOM fragment:
 
 Dynamic changes in time can be implemented by providing implementation of `animation()` method. This method runs ~ 60-times per second. Return value decides, if the animation will continue (= true) or stop (= false). If you want to start a stopped animation, call the `runAnimation()` method and in the callback method `animation()` return true to keep the animation loop running. See `todo-clock.ts` for inspiration.
 
-For actions that do not need so high frequency, `setTimeout()` and `setInterval()` could be a better option. In both cases we must save the timer ID, and in the overwritten method `disconnectedCallback()` clear the interval or timer (call the `clearTimeout()` or `clearInterval()`).
+``` typescript
+protected animation(): boolean {
+    // updates ~60 times a second - will be eye-catching but energy-hungry :-)
+    // less-ambitious version is in example code
+    const clock = this.dom("clock") as HTMLSpanElement;
+    clock.innerHTML = `${(new Date()).toISOString().replace(/[TZ]/g, " ")} GMT`;
+    return true;
+}
+```
+
+For actions that do not need so high frequency, `setTimeout()` and `setInterval()` could be a better option. In both cases we must save the timer ID, and in the overwritten method `disconnectedCallback()` clear the timer - call the `clearTimeout()` or `clearInterval()`.
+
+``` typescript
+private tick: number;
+private time: string;
+
+constructor() {
+    super();
+    this.tick = setInterval(() => this.time = (new Date()).toISOString(), 1000);
+}
+
+protected disconnectedCallback(): void {
+    clearInterval(this.tick);
+}
+```
 
 ## State: HTML element attributes and object parameters
 
@@ -203,6 +227,20 @@ this.dispatch("delete-task", this);
 ## Cleanup
 
 If the component uses resources that has to be released by end-of-life (to avoid memory leaks, to stop running timers, releasing listeners, etc), all the cleanup tasks can be executed in the `disconnectedCallback()` method.
+
+``` typescript
+private tick: number;
+private time: string;
+
+constructor() {
+    super();
+    this.tick = setInterval(() => this.time = (new Date()).toISOString(), 1000);
+}
+
+protected disconnectedCallback(): void {
+    clearInterval(this.tick);
+}
+```
 
 ## Side Notes
 
