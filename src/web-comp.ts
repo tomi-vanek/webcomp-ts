@@ -10,7 +10,7 @@ const markupWith = (html: string, css: string): string => {
     const cssMarkup =
         (css && css.length)
             ? `
-<style>
+<style type="text/css">
 ${css}
 </style>
 `

@@ -47,48 +47,28 @@ export class TodoTask extends WebComp {
     }
     get html() {
         return `
-<div class="todo-task">
-    <div class="task" elem="task">Default</div>
-    <div class="ctrl">
+<todo-row>
+    <div class="content">
+        <span class="task" elem="task">none</span>
         <input type="checkbox" elem="done"></input>
         <button elem="delete">🗑</button>
     </div>
-</div>
+</todo-row>
 <hr />
 `;
     }
     get css() {
         return `
-div.todo-task {
-    padding: 5px;
-    margin: 0;
-    width: auto;
-    background-color: lightyellow;
+.content {
+    display: flex;
 }
-div.todo-task:hover {
-    position: relative;
-    top: -1px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    cursor: pointer;
+.task[elem="task"] {
+    flex: 1;
 }
-div.todo-task:hover > div {
-    position: initial;
-    top: 0;
-    box-shadow: none;
-    cursor: initial;
-}
-div.todo-task > div.task {
-    display: inline-block;
-    margin-right: auto;
-}
-div.todo-task > div.task[done] {
+.task[done] {
     text-decoration: line-through;
     font-style: italic;
     color: gray;
-}
-div.todo-task > div.ctrl {
-    float: right;
-    margin-left: auto;
 }
 `;
     }

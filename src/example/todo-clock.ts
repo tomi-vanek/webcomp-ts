@@ -13,8 +13,12 @@ export class TodoClock extends WebComp {
     }
 
     protected animation(): boolean {
+        // Calculate new timestamp string
         const now = `${(new Date()).toISOString().split(".")[0].replace(/[TZ]/g, " ")} GMT`;
+
+        // Compare new timestamp string with current attribute time
         if (this.time !== now) {
+            // If not equal --> update it
             this.time = now;
         }
         return true;

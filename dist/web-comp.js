@@ -6,7 +6,7 @@ const pascalToKebab = (c) => c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()
 const markupWith = (html, css) => {
     const cssMarkup = (css && css.length)
         ? `
-<style>
+<style type="text/css">
 ${css}
 </style>
 `

@@ -33,7 +33,7 @@ export class TodoList extends WebComp {
 div.todo-app-root {
     padding: 5px;
     margin: 1rem;
-    width: 80%;
+    max-width: 600px;
     background-color: mocasine;
     border: 1px solid grey;
 }
