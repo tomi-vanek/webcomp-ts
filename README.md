@@ -4,13 +4,13 @@ WebComp is a minimalistic base class to build your own custom [web components](h
 
 WebComp base class offers
 
-* Simple definition of component's HTML and CSS
-* Access to elements marked with `elem` attribute in HTML markup
-* Registering custom element with tag name derived from class name
-* Cached HTML templates for all derived web components
-* Dispatch of custom events
-* Setting of element attributes without value (boolean)
-* Callback for animation (~ with 60 calls per second)
+* Simple definition of component's HTML and CSS
+* Access to elements marked with `elem` attribute in HTML markup
+* Registering custom element with tag name derived from class name
+* Cached HTML templates for all derived web components
+* Dispatch of custom events
+* Setting of element attributes without value (boolean)
+* Callback for animation (~ with 60 calls per second)
 
 ## Quick start
 
