@@ -8,13 +8,13 @@ export class TodoList extends WebComp {
         const taskList = this.dom("task-list");
         if (taskList) {
             this.addEventListener("delete-task", (e: Event) => {
-                const detail = (e as CustomEvent).detail;
-                console.debug("delete-task", detail);
+                const detail = (e as CustomEvent<TodoTask>).detail;
+                console.debug("delete-task", detail.task);
                 taskList.removeChild(detail);
             });
 
             this.addEventListener("new-task", (e: Event) => {
-                const detail = (e as CustomEvent).detail;
+                const detail = (e as CustomEvent<string>).detail;
                 console.debug("new-task", detail);
                 const task = detail;
                 const taskElem = document.createElement("todo-task") as TodoTask;

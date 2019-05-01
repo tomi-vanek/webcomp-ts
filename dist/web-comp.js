@@ -1,19 +1,3 @@
-const classNameOf = (obj) => obj
-    .toString()
-    .split("(" || /s+/)[0]
-    .split(" " || /s+/)[1];
-const pascalToKebab = (c) => c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-const markupWith = (html, css) => {
-    const cssMarkup = (css && css.length)
-        ? `
-<style type="text/css">
-${css}
-</style>
-`
-        : "";
-    return `${html}
-${cssMarkup}`;
-};
 export class WebComp extends HTMLElement {
     constructor() {
         super();
@@ -98,4 +82,24 @@ export class WebComp extends HTMLElement {
     }
 }
 WebComp.templates = new Map();
+function classNameOf(obj) {
+    return obj
+        .toString()
+        .split("(" || /s+/)[0]
+        .split(" " || /s+/)[1];
+}
+function pascalToKebab(c) {
+    return c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
+function markupWith(html, css) {
+    const cssMarkup = (css && css.length)
+        ? `
+<style type="text/css">
+${css}
+</style>
+`
+        : "";
+    return `${html}
+${cssMarkup}`;
+}
 //# sourceMappingURL=web-comp.js.map

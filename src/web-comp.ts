@@ -1,24 +1,3 @@
-const classNameOf = (obj: any): string =>
-    obj
-        .toString()
-        .split("(" || /s+/)[0]
-        .split(" " || /s+/)[1];
-
-const pascalToKebab = (c: string): string => c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-
-const markupWith = (html: string, css: string): string => {
-    const cssMarkup =
-        (css && css.length)
-            ? `
-<style type="text/css">
-${css}
-</style>
-`
-            : "";
-    return `${html}
-${cssMarkup}`;
-};
-
 export type Fragment = DocumentFragment | HTMLElement | Node;
 
 // Base class for Web Components
@@ -59,9 +38,9 @@ export abstract class WebComp extends HTMLElement {
 
     // Helper function: dispatching custom events with standard DOM communication
     // Event bubbles up the DOM tree
-    public dispatch(event: string, data: any): void {
+    public dispatch<T>(event: string, data: T): void {
         this.dispatchEvent(
-            new CustomEvent(event, {
+            new CustomEvent<T>(event, {
                 bubbles: true,
                 composed: true,
                 detail: data,
@@ -146,4 +125,28 @@ export abstract class WebComp extends HTMLElement {
         root.querySelectorAll(`[${attribute}]`).forEach(
             (c) => this.domElems.set(c.getAttribute(attribute) as string, c as HTMLElement));
     }
+}
+
+function classNameOf(obj: any): string {
+    return obj
+        .toString()
+        .split("(" || /s+/)[0]
+        .split(" " || /s+/)[1];
+}
+
+function pascalToKebab(c: string): string {
+    return c.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+function markupWith(html: string, css: string): string {
+    const cssMarkup =
+        (css && css.length)
+            ? `
+<style type="text/css">
+${css}
+</style>
+`
+            : "";
+    return `${html}
+${cssMarkup}`;
 }

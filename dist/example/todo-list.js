@@ -6,7 +6,7 @@ export class TodoList extends WebComp {
         if (taskList) {
             this.addEventListener("delete-task", (e) => {
                 const detail = e.detail;
-                console.debug("delete-task", detail);
+                console.debug("delete-task", detail.task);
                 taskList.removeChild(detail);
             });
             this.addEventListener("new-task", (e) => {
