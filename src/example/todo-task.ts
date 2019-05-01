@@ -31,7 +31,7 @@ export class TodoTask extends WebComp {
         this.setWithoutValue(this, "done", value);
     }
 
-    static get observedAttributes() {
+    static get observedAttributes(): string[] {
         return ["task", "done"];
     }
 
@@ -54,7 +54,8 @@ export class TodoTask extends WebComp {
         }
     }
 
-    get html() { return `
+    get html(): string {
+        return `
 <todo-row>
     <div class="content">
         <span class="task" elem="task">none</span>
@@ -65,7 +66,8 @@ export class TodoTask extends WebComp {
 <hr />
 `; }
 
-    get css() { return `
+    get css(): string {
+        return `
 .content {
     display: flex;
 }

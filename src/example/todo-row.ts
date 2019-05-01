@@ -5,13 +5,15 @@ export class TodoRow extends WebComp {
         super();
     }
 
-    get html() { return `
+    get html(): string {
+        return `
 <div class="row">
     <slot></slot>
 </div>
 `; }
 
-    get css() { return `
+    get css(): string {
+        return `
 .row {
     padding: 5px;
     margin: 0;

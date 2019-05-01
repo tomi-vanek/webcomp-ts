@@ -1,7 +1,7 @@
 import { WebComp } from "../web-comp.js";
 
 export class TodoClock extends WebComp {
-    get html() {
+    get html(): string {
         return `<span elem="clock"></span>`;
     }
 

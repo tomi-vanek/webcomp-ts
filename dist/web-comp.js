@@ -2,7 +2,7 @@ export class WebComp extends HTMLElement {
     constructor() {
         super();
         this.domElems = new Map();
-        console.debug("Constructor", this.name);
+        console.debug("Constructor", this.className);
         const root = this.attachShadow({ mode: "open" });
         root.appendChild(this.render());
         this.mapDom(root);
@@ -40,14 +40,14 @@ export class WebComp extends HTMLElement {
             }
         }
         else {
-            throw new Error(`Element ${elem} not found in ${this.name}. Define elem="${elem}" as attribute in HTML element.`);
+            throw new Error(`Element ${elem} not found in ${this.className}. Define elem="${elem}" as attribute in HTML element.`);
         }
     }
-    get name() {
+    get className() {
         return this.constructor.name;
     }
     get tag() {
-        return pascalToKebab(this.name);
+        return pascalToKebab(this.className);
     }
     get html() {
         return "<!-- no visible HTML -->";
@@ -56,13 +56,13 @@ export class WebComp extends HTMLElement {
         return "/* no visible CSS */";
     }
     render() {
-        console.debug("Render", this.name);
-        let template = WebComp.templates.get(this.name);
+        console.debug("Render", this.className);
+        let template = WebComp.templates.get(this.className);
         if (!template) {
             const templateElem = document.createElement("template");
             templateElem.innerHTML = markupWith(this.html, this.css);
             template = document.importNode(templateElem, true);
-            WebComp.templates.set(this.name, template);
+            WebComp.templates.set(this.className, template);
         }
         return template.content.cloneNode(true);
     }

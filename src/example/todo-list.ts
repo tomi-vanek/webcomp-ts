@@ -24,7 +24,7 @@ export class TodoList extends WebComp {
         }
     }
 
-    get html() {
+    get html(): string {
         return `
 <div class="todo-app-root" elem="todo">
     <slot></slot>
@@ -34,7 +34,7 @@ export class TodoList extends WebComp {
 `;
     }
 
-    get css() {
+    get css(): string {
         return `
 div.todo-app-root {
     padding: 5px;

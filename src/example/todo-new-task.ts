@@ -16,7 +16,8 @@ export class TodoNewTask extends WebComp {
         }
     }
 
-    get html() { return `
+    get html(): string {
+        return `
 <todo-row>
     <form elem="new-task">
         <label for="task">New Task:</label>
@@ -28,7 +29,8 @@ export class TodoNewTask extends WebComp {
 </todo-row>
 `; }
 
-    get css() { return `
+    get css(): string {
+        return `
 form[elem="new-task"] {
     display: flex;
     align-items: center;

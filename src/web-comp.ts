@@ -11,7 +11,7 @@ export abstract class WebComp extends HTMLElement {
         if (window.customElements && !window.customElements.get(tag)) {
             if (tag.split("-").length < 2) {
                 throw new Error(
-                    `Class name must consist from more pascal-case words, "${name}" has only one capital letter.`,
+`Class name must consist from more pascal-case words, "${name}" has only one capital letter.`,
                 );
             }
             console.debug("Register", tag, name);
@@ -27,7 +27,7 @@ export abstract class WebComp extends HTMLElement {
 
     constructor() {
         super();
-        console.debug("Constructor", this.name);
+        console.debug("Constructor", this.className);
 
         // Instantiate and attach the shadow root
         const root = this.attachShadow({ mode: "open" });
@@ -48,12 +48,12 @@ export abstract class WebComp extends HTMLElement {
         );
     }
 
-    // Access to cached elements
+    // Cached dom elements
     public dom(elem: string): HTMLElement | undefined {
         return this.domElems.get(elem);
     }
 
-    // Helper function: setting attributes of element without value (boolean)
+    // Helper function: Setting of element attributes without value (boolean)
     public setWithoutValue(elem: HTMLElement | string, attr: string, value: boolean): void {
         const e = elem instanceof HTMLElement ? elem : this.dom(elem);
         if (e) {
@@ -64,18 +64,18 @@ export abstract class WebComp extends HTMLElement {
             }
         } else {
             throw new Error(
-                `Element ${elem} not found in ${this.name}. Define elem="${elem}" as attribute in HTML element.`);
+                `Element ${elem} not found in ${this.className}. Define elem="${elem}" as attribute in HTML element.`);
         }
     }
 
     // Web component's class name
-    public get name(): string {
+    public get className(): string {
         return this.constructor.name;
     }
 
     // Web component's tag
     public get tag(): string {
-        return pascalToKebab(this.name);
+        return pascalToKebab(this.className);
     }
 
     // HTML markup of the web component
@@ -93,13 +93,13 @@ export abstract class WebComp extends HTMLElement {
     // Render the component as DOM fragment.
     // Default implementation combines markup from this.html and this.css
     public render(): Fragment {
-        console.debug("Render", this.name);
-        let template = WebComp.templates.get(this.name);
+        console.debug("Render", this.className);
+        let template = WebComp.templates.get(this.className);
         if (!template) {
             const templateElem = document.createElement("template");
             templateElem.innerHTML = markupWith(this.html, this.css);
             template = document.importNode(templateElem, true);
-            WebComp.templates.set(this.name, template);
+            WebComp.templates.set(this.className, template);
         }
         return template.content.cloneNode(true);
     }

@@ -7,7 +7,7 @@ export declare abstract class WebComp extends HTMLElement {
     dispatch<T>(event: string, data: T): void;
     dom(elem: string): HTMLElement | undefined;
     setWithoutValue(elem: HTMLElement | string, attr: string, value: boolean): void;
-    readonly name: string;
+    readonly className: string;
     readonly tag: string;
     protected readonly html: string;
     protected readonly css: string;

@@ -1,6 +1,16 @@
 # WebComp - TypeScript base class for web components
 
-Base class for custom [web components](https://www.webcomponents.org/specs) written in TypeScript.
+WebComp is a minimalistic base class to build your own custom [web components](https://www.webcomponents.org/specs) in TypeScript or JavaScript. Base class does not build any opinionated abstraction on top of standards. The ambition is to have in new component only necessary component logic and inherit helper and boilerplate code from this base class.
+
+WebComp base class offers
+
+* Simple definition of component's HTML and CSS
+* Access to elements marked with `elem` attribute in HTML markup
+* Registering custom element with tag name derived from class name
+* Cached HTML templates for all derived web components
+* Dispatch of custom events
+* Setting of element attributes without value (boolean)
+* Callback for animation (~ with 60 calls per second)
 
 ## Quick start
 
@@ -68,7 +78,7 @@ Custom element overwrites getter for HTML template and getter for CSS:
 
 ``` TypeScript
 ...
-get html() { return `
+get html(): string { return `
     <div class="content">
         <slot></slot>
         <p elem="task"></p>
@@ -77,7 +87,7 @@ get html() { return `
     <button elem="delete">Delete</button>
 `; }
 
-get css() { return `
+get css(): string { return `
     .content {
         background-color: silver;
     }
@@ -173,7 +183,7 @@ set done(value: boolean) {
 Component can react to changes of parameters / attributes by listener defined in W3C Custom Elemens standard. The list of attributes watched by the listener is defined by overwritten method `observedAttributes` that returns array of attribute names. Listener is overwritten method `attributeChangedCallback`.
 
 ``` typescript
-static get observedAttributes() {
+static get observedAttributes(): string[] {
     return ["task", "done"];
 }
 ```
