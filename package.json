@@ -23,6 +23,9 @@
     "shadowdom",
     "no-framework"
   ],
+  "homepage": "https://github.com/tomi-vanek/webcomp-ts/blob/master/README.md",
+  "bugs": "https://github.com/tomi-vanek/webcomp-ts/issues",
+  "repository": "https://github.com/tomi-vanek/webcomp-ts",
   "scripts": {
     "start": "npm run watch",
     "// LIFECYCLE": "----------------------------------",
