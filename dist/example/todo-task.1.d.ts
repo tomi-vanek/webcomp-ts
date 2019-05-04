@@ -3,7 +3,6 @@ export declare class TodoTask extends WebComp {
     constructor();
     task: string;
     done: boolean;
-    edit: boolean;
     static readonly observedAttributes: string[];
     protected attributeChangedCallback(name: string, oldval: string, newval: string): void;
     readonly html: string;

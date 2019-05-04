@@ -4,8 +4,26 @@ export class TodoTask extends WebComp {
         super();
         this.setWithoutValue("task", "done", this.done);
         this.setWithoutValue("done", "checked", this.done);
-        const done = this.dom("done");
-        done.addEventListener("change", () => (this.done = done.checked));
+        const doneButton = this.dom("done");
+        doneButton.addEventListener("click", () => {
+            this.done = !this.done;
+            this.edit = false;
+        });
+        const editButton = this.dom("edit");
+        editButton.addEventListener("click", () => {
+            if (!this.done) {
+                this.edit = !this.edit;
+            }
+        });
+        const taskInput = this.dom("input");
+        taskInput.addEventListener("keypress", (event) => {
+            const pressedEnter = event.which === 13 || event.keyCode === 13;
+            if (pressedEnter) {
+                event.preventDefault();
+                this.edit = false;
+            }
+            return !pressedEnter;
+        });
         const delButton = this.dom("delete");
         delButton.addEventListener("click", () => {
             console.debug(`Deleting "${this.task}"`);
@@ -17,12 +35,36 @@ export class TodoTask extends WebComp {
     }
     set task(value) {
         this.setAttribute("task", value);
+        const task = this.dom("task");
+        task.innerText = this.task;
+        const taskInput = this.dom("input");
+        taskInput.value = this.task;
     }
     get done() {
         return this.hasAttribute("done");
     }
     set done(value) {
         this.setWithoutValue(this, "done", value);
+        const doneButton = this.dom("done");
+        doneButton.innerText = this.done ? "✘" : "✔︎";
+    }
+    get edit() {
+        return this.hasAttribute("edit");
+    }
+    set edit(value) {
+        this.setWithoutValue(this, "edit", value);
+        const task = this.dom("task");
+        const taskInput = this.dom("input");
+        if (this.edit) {
+            taskInput.value = task.innerText;
+            task.classList.add("hidden");
+            taskInput.classList.remove("hidden");
+        }
+        else {
+            task.innerText = taskInput.value;
+            task.classList.remove("hidden");
+            taskInput.classList.add("hidden");
+        }
     }
     static get observedAttributes() {
         return ["task", "done"];
@@ -49,9 +91,13 @@ export class TodoTask extends WebComp {
         return `
 <todo-row>
     <div class="content">
-        <span class="task" elem="task">none</span>
-        <input type="checkbox" elem="done"></input>
-        <button elem="delete">🗑</button>
+        <span elem="task">none</span>
+        <input type="text" elem="input" class="hidden"></input>
+        <div>
+            <button elem="done">✔︎</button>
+            <button elem="edit">✎</button>
+            <button elem="delete">🗑</button>
+        </div>
     </div>
 </todo-row>
 <hr />
@@ -61,14 +107,33 @@ export class TodoTask extends WebComp {
         return `
 .content {
     display: flex;
+    align-items: center;
 }
-.task[elem="task"] {
+[elem="task"], [elem="input"] {
     flex: 1;
 }
-.task[done] {
+[elem="task"] {
+    padding: 0.3rem;
+}
+[elem="task"][done] {
     text-decoration: line-through;
     font-style: italic;
     color: gray;
+}
+.hidden {
+    display: none;
+}
+[elem="input"] {
+    flex: 1;
+    color: navy;
+    padding: .3rem;
+    background-color: palegoldenrod;
+    border: 2px solid white;
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+    border-radius: 7px;
+}
+[elem="edit"] {
+    transform: scaleX(-1);
 }
 `;
     }

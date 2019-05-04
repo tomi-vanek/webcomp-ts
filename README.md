@@ -2,7 +2,7 @@
 
 WebComp is a minimalistic base class to build your own custom [web components](https://www.webcomponents.org/specs) in TypeScript or JavaScript. Base class does not build any opinionated abstraction on top of standards. The ambition is to have in new component only necessary component logic and inherit helper and boilerplate code from this base class.
 
-WebComp base class offers
+## Features
 
 * Simple definition of component's HTML and CSS
 * Access to elements marked with `elem` attribute in HTML markup

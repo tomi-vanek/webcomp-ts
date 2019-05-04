@@ -10,4 +10,6 @@ export default function todo(): void {
     TodoNewTask.defineElement();
     TodoList.defineElement();
     TodoClock.defineElement();
+
+    // ... and the application is running
 }

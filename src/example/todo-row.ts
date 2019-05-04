@@ -15,7 +15,8 @@ export class TodoRow extends WebComp {
     get css(): string {
         return `
 .row {
-    padding: 5px;
+    height: 1.8rem;
+    padding: 0.2rem;
     margin: 0;
     background-color: lightyellow;
 }

@@ -9,7 +9,7 @@ export class TodoNewTask extends WebComp {
             newTask.addEventListener("submit", (e) => {
                 e.preventDefault();
                 const taskInput = this.dom("task-input") as HTMLInputElement;
-                const task = taskInput.value;
+                const task = taskInput.value || "none";
                 taskInput.value = "";
                 this.dispatch("new-task", task);
             });
@@ -21,28 +21,22 @@ export class TodoNewTask extends WebComp {
 <todo-row>
     <form elem="new-task">
         <label for="task">New Task:</label>
-        <input class="task" name="task" type="text" elem="task-input"></input>
-        <div class="ctrl">
-            <input class="plus" type="submit" value="➕"></input>
-        </div>
+        <input name="task" type="text" elem="task-input"></input>
+        <button type="submit">➕</input>
     </form>
 </todo-row>
 `; }
 
     get css(): string {
         return `
-form[elem="new-task"] {
+form {
     display: flex;
     align-items: center;
 }
-form[elem="new-task"] * {
+form * {
     margin: 0 3px;
 }
-input.plus {
-    padding: .2rem;
-    margin: auto 0;
-}
-input.task {
+input[type="text"] {
     flex: 1;
     color: navy;
     padding: .3rem;
@@ -50,10 +44,6 @@ input.task {
     border: 2px solid white;
     box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
     border-radius: 7px;
-}
-.ctrl {
-    margin-left: auto;
-    font-height: 0.8rem;
 }
 `; }
 }
