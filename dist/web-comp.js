@@ -50,19 +50,21 @@ export class WebComp extends HTMLElement {
         return pascalToKebab(this.className);
     }
     get html() {
-        return "<!-- no visible HTML -->";
+        return "";
     }
     get css() {
-        return "/* no visible CSS */";
+        return "";
     }
     render() {
         console.debug("Render", this.className);
-        let template = WebComp.templates.get(this.className);
+        const text = markupWith(this.html, this.css);
+        const hash = hashCode(this.className + text);
+        let template = WebComp.templates.get(hash);
         if (!template) {
             const templateElem = document.createElement("template");
-            templateElem.innerHTML = markupWith(this.html, this.css);
+            templateElem.innerHTML = text;
             template = document.importNode(templateElem, true);
-            WebComp.templates.set(this.className, template);
+            WebComp.templates.set(hash, template);
         }
         return template.content.cloneNode(true);
     }
@@ -101,5 +103,15 @@ ${css}
         : "";
     return `${html}
 ${cssMarkup}`;
+}
+function hashCode(s) {
+    let hash = 0;
+    if (s.length) {
+        let i = s.length;
+        while (--i) {
+            hash = (((hash << 5) - hash) + s.charCodeAt(i)) | 0;
+        }
+    }
+    return "" + hash;
 }
 //# sourceMappingURL=web-comp.js.map

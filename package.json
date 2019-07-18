@@ -1,6 +1,6 @@
 {
   "name": "webcomp-ts",
-  "version": "0.1.11",
+  "version": "0.2.0",
   "description": "Base class for web components has basic boilerplate code to simplify custom element implementation",
   "main": "dist/web-comp.js",
   "module": "dist/web-comp.js",
@@ -23,7 +23,7 @@
     "shadowdom",
     "no-framework"
   ],
-  "homepage": "https://github.com/tomi-vanek/webcomp-ts/blob/master/README.md",
+  "homepage": "https://github.com/tomi-vanek/webcomp-ts#readme",
   "bugs": "https://github.com/tomi-vanek/webcomp-ts/issues",
   "repository": "https://github.com/tomi-vanek/webcomp-ts",
   "scripts": {

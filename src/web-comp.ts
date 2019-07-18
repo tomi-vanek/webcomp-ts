@@ -3,7 +3,9 @@ export type Fragment = DocumentFragment | HTMLElement | Node;
 // Base class for Web Components
 // has basic boilerplate code to simplify custom element implementation
 export abstract class WebComp extends HTMLElement {
-    // Registering of the custom element - has to be called explicitly for each derived web component
+
+    // Registering of the custom element
+    // has to be called explicitly for each derived web component
     // i.e. `TodoTask.defineElement();`
     public static defineElement(): void {
         const name = classNameOf(this);
@@ -79,32 +81,34 @@ export abstract class WebComp extends HTMLElement {
     }
 
     // HTML markup of the web component
-    // Metod for overwrite by derived classes
+    // Method for overwrite by derived classes
     protected get html(): string {
-        return "<!-- no visible HTML -->";
+        return "";
     }
 
     // CSS of the web component
-    // Metod for overwrite by derived classes
+    // Method for overwrite by derived classes
     protected get css(): string {
-        return "/* no visible CSS */";
+        return "";
     }
 
     // Render the component as DOM fragment.
     // Default implementation combines markup from this.html and this.css
     public render(): Fragment {
         console.debug("Render", this.className);
-        let template = WebComp.templates.get(this.className);
+        const text = markupWith(this.html, this.css);
+        const hash = hashCode(this.className + text);
+        let template = WebComp.templates.get(hash);
         if (!template) {
             const templateElem = document.createElement("template");
-            templateElem.innerHTML = markupWith(this.html, this.css);
+            templateElem.innerHTML = text;
             template = document.importNode(templateElem, true);
-            WebComp.templates.set(this.className, template);
+            WebComp.templates.set(hash, template);
         }
         return template.content.cloneNode(true);
     }
 
-    // Metod for overwrite by derived classes
+    // Method for overwrite by derived classes
     // If method returns true, it will be called by each frame (~60 times a minute)
     protected animation(): boolean {
         return false;
@@ -149,4 +153,17 @@ ${css}
             : "";
     return `${html}
 ${cssMarkup}`;
+}
+
+// the "java algorithm" for string hash
+function hashCode(s: string): string {
+    let hash = 0;
+    if (s.length) {
+        let i = s.length;
+        while (--i) {
+            // 32bit integer
+            hash = (((hash << 5) - hash) + s.charCodeAt(i)) | 0;
+        }
+    }
+    return "" + hash;
 }
