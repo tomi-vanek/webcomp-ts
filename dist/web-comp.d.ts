@@ -3,6 +3,7 @@ export declare abstract class WebComp extends HTMLElement {
     static defineElement(): void;
     private static readonly templates;
     private readonly domElems;
+    private readonly root;
     constructor();
     dispatch<T>(event: string, data: T): void;
     dom(elem: string): HTMLElement | undefined;

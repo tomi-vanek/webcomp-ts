@@ -27,14 +27,16 @@ export abstract class WebComp extends HTMLElement {
     // Cached reference to elements marked with `elem` attribute in HTML markup
     private readonly domElems: Map<string, HTMLElement> = new Map();
 
+    private readonly root: ShadowRoot;
+
     constructor() {
         super();
         console.debug("Constructor", this.className);
 
         // Instantiate and attach the shadow root
-        const root = this.attachShadow({ mode: "open" });
-        root.appendChild(this.render());
-        this.mapDom(root);
+        this.root = this.attachShadow({ mode: "open" });
+        this.root.appendChild(this.render());
+        this.mapDom();
         this.runAnimation();
     }
 
@@ -52,7 +54,12 @@ export abstract class WebComp extends HTMLElement {
 
     // Cached dom elements
     public dom(elem: string): HTMLElement | undefined {
-        return this.domElems.get(elem);
+        let result = this.domElems.get(elem);
+        if (!result) {
+            this.mapDom();
+            result = this.domElems.get(elem);
+        }
+        return result;
     }
 
     // Helper function: Setting of element attributes without value (boolean)
@@ -109,7 +116,7 @@ export abstract class WebComp extends HTMLElement {
     }
 
     // Method for overwrite by derived classes
-    // If method returns true, it will be called by each frame (~60 times a minute)
+    // If method returns true, it will be called by each frame (~60 times each second)
     protected animation(): boolean {
         return false;
     }
@@ -124,9 +131,9 @@ export abstract class WebComp extends HTMLElement {
     }
 
     // Adds all marked elements into elem cache
-    private mapDom(root: ShadowRoot): void {
+    private mapDom(): void {
         const attribute = "elem";
-        root.querySelectorAll(`[${attribute}]`).forEach(
+        this.root.querySelectorAll(`[${attribute}]`).forEach(
             (c) => this.domElems.set(c.getAttribute(attribute) as string, c as HTMLElement));
     }
 }

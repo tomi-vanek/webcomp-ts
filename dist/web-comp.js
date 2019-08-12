@@ -3,9 +3,9 @@ export class WebComp extends HTMLElement {
         super();
         this.domElems = new Map();
         console.debug("Constructor", this.className);
-        const root = this.attachShadow({ mode: "open" });
-        root.appendChild(this.render());
-        this.mapDom(root);
+        this.root = this.attachShadow({ mode: "open" });
+        this.root.appendChild(this.render());
+        this.mapDom();
         this.runAnimation();
     }
     static defineElement() {
@@ -27,7 +27,12 @@ export class WebComp extends HTMLElement {
         }));
     }
     dom(elem) {
-        return this.domElems.get(elem);
+        let result = this.domElems.get(elem);
+        if (!result) {
+            this.mapDom();
+            result = this.domElems.get(elem);
+        }
+        return result;
     }
     setWithoutValue(elem, attr, value) {
         const e = elem instanceof HTMLElement ? elem : this.dom(elem);
@@ -78,9 +83,9 @@ export class WebComp extends HTMLElement {
             }
         });
     }
-    mapDom(root) {
+    mapDom() {
         const attribute = "elem";
-        root.querySelectorAll(`[${attribute}]`).forEach((c) => this.domElems.set(c.getAttribute(attribute), c));
+        this.root.querySelectorAll(`[${attribute}]`).forEach((c) => this.domElems.set(c.getAttribute(attribute), c));
     }
 }
 WebComp.templates = new Map();
